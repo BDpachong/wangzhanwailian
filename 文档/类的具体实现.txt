@@ -1,0 +1,114 @@
+类的具体实现
+文档说明：本文档为架构文档的函数实现，文档代码用伪代码写，需要转换网页语言所使用的代码。
+本文档需要对照架构文档进行阅读。
+
+１．	当点击爬取按钮之后运行以下函数．
+ｆｕｎｃｔｉｏｎ（）//点击按钮之后运行的函数
+｛
+	ｓｔａｒｔ（ＵＲＬ）；　//运行ｓｔａｒｔ函数将用户输入的ｕｒｌ传入
+｝
+
+ｓｔａｒｔ（ｓｔｒｉｎｇ　ｍ＿ｕｒｌ）
+｛
+ｉｆ（判断用户输入的ｕｒｌ是否有错误）｛
+／／没有错误
+数据ｍ＿ｗｅｂＪｕｄｇｅ＝ｎｅｗ　ccwebJudhe(ｍ＿ｕｒｌ) //新建一个CCWebJudge类赋值给ｍ＿ｗｅｂＪｕｄｇｅ
+ｍ＿ｗｅｂＪｕｄｇｅ．StartCrawlingWeb(ｍ＿ｕｒｌ)；　//调用CCWebJudge类中的StartCrawlingWeb(url)函数开始爬取
+
+｝ｅｌｓｅ｛
+／／有错误
+／／提示用户输入错误
+ｅｒｒｏｒ（“输入错误”）；
+｝
+
+｝
+２. CCWebJudge类中的函数
+ccwebJudｇe(string ｍ＿ｕｒｌ) //类的初始化
+｛
+m_StartURL=m_url;
+m_YuMing=m_StartURL-"www."; //url去掉www前缀
+
+
+m_WebNum=0;
+m_Root = new MTree(m_url);
+iterator =m_Root
+｝
+
+list<string> strToURL(string str) //将获取到的网页数据函数转换为以链表存储的string数据来存储url
+{
+？？？？？
+}
+
+StartCrawlingWeb(string ｍ＿ｕｒｌ) //开始爬取函数
+{
+
+//此函数首先从爬虫库提供的函数中爬取指定的url页面，通过函数将页面之中所有的域名保存下来存储到指定的一个临时链表中，之后对临时链表中的url进行遍历，当url内链网站时递归调用此函数
+存储的数据为树状结构MTree在当网页之中存在url的时候进行数据保存
+
+
+	str=m_pachon.paqu(ｍ＿ｕｒｌ) //爬虫库中的爬取函数此处只是一个例子以实际函数为准，通过调用爬虫库中的爬取函数获
+					取到网页的信息以字符串string方式存储
+	list<string> m_url=strToURL(str) //m_url为当前网页内所有的内链和外链网址
+	if(m_url!=null)	//当页面之中存在网页时对页面内的网页进行遍历爬取，若不存在下一级页面则不爬取，只是将迭代器iterator
+				移动到父节点位置
+	{
+	for（v:m_url） //遍历m_url中的网址判断内链和外链，v表示当前遍历时的值
+	{
+		if（！m_spl.findURL(v)）//判断数据库中是否存在此url ，注意v代表的是链表中当前遍历的值
+		{
+			if（ JudgeWeb(v) ）//判断网址为内链网站还是外链网站
+			{
+				//将url存入数据库
+				tree=new MTree（v）；
+				tree.InOrOut=true; 
+				iterator.addChild(tree); //添加树的子节点
+				iterator=tree; //将迭代器移动到tree节点上
+				StartCrawlingWeb(v) //递归调用爬取url函数StartCrawlingWeb（）继续爬取当前页面的下一级，爬取完之后再回到当前级别继续爬取。
+			}else //如果网站为外链网站
+			{  tree=new MTree（v）；
+				tree.InOrOut=false;
+				iterator.addChild(tree); 	}
+		}else //如果数据库中存在当前网站
+		{	}//什么都不做继续继续遍历下一个url
+	}
+	}
+
+	if(iterator==m_Root){//判断迭代器是否在根节点位置
+	iterator=iterator.parent；//当爬取完当前页面会回到页面的上一级
+	}
+
+}
+
+
+
+bool JudgeWeb(string URL)
+{
+//将传入的url地址前缀www去掉之后和最开始的url，m_YuMing作对比当遇到“/”之后结束对比若之前的字符串都相同则为内链，否则为外链。
+
+
+
+
+string web=URL-"www."
+char a=web.c_str();//转换为单个的字符
+while(char a!="/")
+{
+	//作对比
+}
+
+}
+
+
+3.MTree 类实现
+addChild（MTree tree）//添加树的子节点
+{
+	this.m_Children.pushback(tree) //将添加的节点推入子节点链表中
+	tree.parent=this //将子节点的parent设置为当前节点
+}
+MTree （string m_url）//初始化
+{
+	this.url=m_url
+}
+
+4.CCSQL类函数暂略
+
+
